@@ -1,6 +1,10 @@
 export interface User {
   id: number,
-  name: string
+  name: string,
+  email: string,
+  title: string,
+  organization:string,
+  token: string
 }
 
 interface SearchPanelProps {

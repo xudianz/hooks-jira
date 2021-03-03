@@ -21,7 +21,7 @@ export const ProjectListScreen = () => {
     .then(async response => {
       if (response.ok) {
         setList(await response.json())
-      } 
+      }
     })
   }, [debouncedParam])
 
