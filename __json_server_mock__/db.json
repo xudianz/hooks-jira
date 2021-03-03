@@ -21,35 +21,35 @@
     {
       "id": 1,
       "name": "骑手管理",
-      "psesonId": 1,
+      "personId": 1,
       "organization": "外卖组",
       "created": 1604989757139
     },
     {
       "id": 2,
       "name": "团购 APP",
-      "psesonId": 2,
+      "personId": 2,
       "organization": "团购组",
       "created": 1604989757139
     },
     {
       "id": 3,
       "name": "物料管理系统",
-      "psesonId": 2,
+      "personId": 2,
       "organization": "物料组",
       "created": 1604989757139
     },
     {
       "id": 4,
       "name": "总部管理系统",
-      "psesonId": 3,
+      "personId": 3,
       "organization": "总部",
       "created": 1604989757139
     },
     {
       "id": 5,
       "name": "送餐路线规划系统",
-      "psesonId": 4,
+      "personId": 4,
       "organization": "规划组",
       "created": 1604989757139
     }
