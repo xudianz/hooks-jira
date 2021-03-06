@@ -24,7 +24,7 @@ export const http = async (endpoint: string, { data, token, headers, ...customCo
   } else {
     config.body = JSON.stringify(data || {})
   }
-  return window.fetch(`/${apiUrl}/${endpoint}`, config)
+  return window.fetch(`${apiUrl}/${endpoint}`, config)
     .then(async response => {
       if (response.status === 401) {
         await Auth.logout()

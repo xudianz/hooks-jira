@@ -18,7 +18,7 @@ export const cleanObject = (object: object) => {
 export const useMount = (callback: () => void) => {
   useEffect(() => {
     callback && callback()
-  }, [callback])
+  }, [])
 }
 
 export const useDebounce = <V>(value: V, delay?: number) => {
