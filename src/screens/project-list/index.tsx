@@ -1,8 +1,7 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { SearchPanel } from './search-panel'
 import { List } from './list'
-import { useDebounce, useMount } from "utils"
-import { useHttp } from "utils/http"
+import { useDebounce } from "utils"
 import styled from "@emotion/styled"
 import { Typography } from "antd"
 import { useProjects } from "utils/project"
@@ -15,7 +14,6 @@ export const ProjectListScreen = () => {
   })
   const debouncedParam =  useDebounce(param, 500)
   
-  const client = useHttp()
   const { isLoading, error, data: list } = useProjects(debouncedParam)
   const { data: users } = useUsers()
 
