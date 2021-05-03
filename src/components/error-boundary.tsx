@@ -14,6 +14,7 @@ export class ErrorBoundary extends React.Component<React.PropsWithChildren<{
   }
   
   // 子组件抛出异常 会接收到异常error
+  // 事件处理中抛出的异常，ErrorBoundary是不会捕获到的
   static getDerivedStateFromError(error: Error) {
     return { error }
   }
