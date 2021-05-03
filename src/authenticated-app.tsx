@@ -4,8 +4,7 @@ import styled from '@emotion/styled'
 import { Row } from "components/lib"
 import { ReactComponent as SoftwareLogo } from 'assets/software-logo.svg'
 import { Button, Dropdown, Menu } from "antd"
-import { Routes, Route } from 'react-router'
-import { BrowserRouter as Router} from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import { ProjectScreen } from "screens/project"
 
 export const AuthenticatedApp = () => {
@@ -13,15 +12,10 @@ export const AuthenticatedApp = () => {
     <Container>
       <PageHeader />
       <Main>
-        <ProjectListScreen />
-        <Router>
-          <Routes>
-            <Route path="/projects" element={<ProjectListScreen />}>
-              {/* <Route path=":projectId" element={<ProjectScreen />}></Route> */}
-            </Route>
-            <Route path="/projects/:projectId" element={<ProjectScreen />}></Route>
-          </Routes>
-        </Router>
+        <Switch>
+          <Route exact path="/projects" component={ProjectListScreen}></Route>
+          <Route path="/projects/:projectId" component={ProjectScreen}></Route>
+        </Switch>
       </Main>
     </Container>
   )
