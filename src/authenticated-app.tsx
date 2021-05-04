@@ -4,8 +4,11 @@ import styled from '@emotion/styled'
 import { Row } from "components/lib"
 import { ReactComponent as SoftwareLogo } from 'assets/software-logo.svg'
 import { Button, Dropdown, Menu } from "antd"
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import { ProjectScreen } from "screens/project"
+import { EpicScreen } from "screens/epic"
+import { KanbanScreen } from "screens/kanban"
+import { resetRoute } from "utils"
 
 export const AuthenticatedApp = () => {
   return (
@@ -14,7 +17,15 @@ export const AuthenticatedApp = () => {
       <Main>
         <Switch>
           <Route exact path="/projects" component={ProjectListScreen}></Route>
-          <Route path="/projects/:projectId" component={ProjectScreen}></Route>
+          <Route path="/projects/:projectId">
+            <ProjectScreen>
+              <Switch>
+                <Route path="/projects/:projectId/kanban" component={KanbanScreen}></Route>
+                <Route path="/projects/:projectId/epic" component={EpicScreen}></Route>
+              </Switch>
+            </ProjectScreen>
+          </Route>
+          <Redirect to="/projects"></Redirect>
         </Switch>
       </Main>
     </Container>
@@ -26,7 +37,9 @@ const PageHeader = () => {
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
-        <SoftwareLogo width="18rem" color="rgb(18, 132, 255)"/>
+        <Button type="link" onClick={resetRoute}>
+          <SoftwareLogo width="18rem" color="rgb(18, 132, 255)"/>
+        </Button>
         <h3>项目</h3>
         <h3>用户</h3>
       </HeaderLeft>
