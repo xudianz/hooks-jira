@@ -6,16 +6,21 @@ import styled from "@emotion/styled"
 import { Typography } from "antd"
 import { useProjects } from "utils/project"
 import { useUsers } from "utils/user"
+import { useUrlSearchParams } from "use-url-search-params"
 
 export const ProjectListScreen = () => {
-  const [param,  setParam] = useState({
-    name: '',
-    personId: ''
-  })
+  // const [param,  setParam] = useState({
+  //   name: '',
+  //   personId: ''
+  // })
+  // 设置url参数
+  const [param, setParam] = useUrlSearchParams({name: '', personId: ''}, {})
+  console.log(param)
   const debouncedParam =  useDebounce(param, 500)
   
   const { isLoading, error, data: list } = useProjects(debouncedParam)
   const { data: users } = useUsers()
+  
 
   useDocumentTitle('项目列表', false)
 
