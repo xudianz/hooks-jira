@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { SearchPanel } from './search-panel'
 import { List } from './list'
 import { useDebounce, useDocumentTitle } from "utils"
@@ -14,20 +13,19 @@ export const ProjectListScreen = () => {
   //   personId: ''
   // })
   // 设置url参数
-  const [param, setParam] = useUrlSearchParams({name: '', personId: ''}, {})
+  const [param, setParam] = useUrlSearchParams({name: "", personId: ""}, {name: String, personId: String})
   console.log(param)
-  const debouncedParam =  useDebounce(param, 500)
-  
+  const debouncedParam = useDebounce(param, 500)
+
   const { isLoading, error, data: list } = useProjects(debouncedParam)
   const { data: users } = useUsers()
-  
 
   useDocumentTitle('项目列表', false)
 
   return (
     <Container>
       <h1>项目列表</h1>
-      <SearchPanel param={param} setParam={setParam} users={users || []} />
+      <SearchPanel param={param} setParam={() => setParam} users={users || []} />
       { error ? <Typography.Text type="danger">{error.message}</Typography.Text> : null}
       <List dataSource={list || []} users={users || []} loading={isLoading}/>
     </Container>
