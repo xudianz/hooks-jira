@@ -7,6 +7,15 @@ import { useProjects } from "utils/project"
 import { useUsers } from "utils/user"
 import { useUrlSearchParams } from "use-url-search-params"
 
+/**
+ * 
+  // const obj = {name: ''} 作为依赖，更新时会陷入死循（每次生产一个新的obj）
+  // 参数为引用类型  不能作为依赖项  可以用setState定义；非引用类型可以放在依赖项里
+  // const [obj, setObj] = useState({name: ''}) obj作为依赖项，不会死循环
+  // 只有在调用setObj的时候 才会认为obj地址发生了变化s
+ * 
+ */
+
 export const ProjectListScreen = () => {
   // const [param,  setParam] = useState({
   //   name: '',
@@ -14,7 +23,6 @@ export const ProjectListScreen = () => {
   // })
   // 设置url参数
   const [param, setParam] = useUrlSearchParams({name: "", personId: ""}, {name: String, personId: String})
-  console.log(param)
   const debouncedParam = useDebounce(param, 500)
 
   const { isLoading, error, data: list } = useProjects(debouncedParam)
