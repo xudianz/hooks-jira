@@ -12,8 +12,8 @@ export interface User {
 interface SearchPanelProps {
   users: User[],
   param: {
-    name?: string,
-    personId?: string
+    name: string,
+    personId: string
   },
   setParam: (param: SearchPanelProps['param']) => void
 }
