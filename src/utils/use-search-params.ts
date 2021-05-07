@@ -1,4 +1,8 @@
 import { useMemo, useState } from "react";
+import { cleanObject } from "utils";
+
+// as const 具体类型设置
+// const list = ['name', 100, { age: 18 }] as const
 
 export const useSearchParams = <k extends string>(keys: k[]) => {
   const url = new URL(window.location.href)
@@ -15,9 +19,15 @@ export const useSearchParams = <k extends string>(keys: k[]) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
       [searchParams]
     ),
-    setSearchParams
+    (params: Partial<{[key in k]: unknown}>) => {
+      // const o = cleanObject({ ...Object.fromEntries(searchParams), ...params }) as any
+      // return setSearchParams(o)
+      return setSearchParams({
+        ...searchParams,
+        ...params
+      })
+    }
+    // setSearchParams
   ] as const
 }
 
-// as const 具体类型设置
-// const list = ['name', 100, { age: 18 }] as const

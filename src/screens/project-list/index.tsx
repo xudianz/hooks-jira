@@ -6,7 +6,6 @@ import { Typography } from "antd"
 import { useProjects } from "utils/project"
 import { useUsers } from "utils/user"
 import { useSearchParams } from 'utils/use-search-params'
-import { useState } from 'react'
 
 /**
  * 
@@ -18,13 +17,13 @@ import { useState } from 'react'
  */
 
 export const ProjectListScreen = () => {
-  const [, setParam] = useState({
-    name: '',
-    personId: ''
-  })
+  // const [, setParam] = useState({
+  //   name: '',
+  //   personId: ''
+  // })
   // 设置url参数
   // const keys = useState<('name' | 'personId')[]>(['name', 'personId'])
-  const [param] = useSearchParams(['name', 'personId'])
+  const [param, setParam] = useSearchParams(['name', 'personId'])
   const debouncedParam = useDebounce(param, 500)
 
   const { isLoading, error, data: list } = useProjects(debouncedParam)
