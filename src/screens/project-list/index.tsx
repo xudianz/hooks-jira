@@ -5,7 +5,7 @@ import styled from "@emotion/styled"
 import { Typography } from "antd"
 import { useProjects } from "utils/project"
 import { useUsers } from "utils/user"
-import { useSearchParams } from 'utils/url'
+import { useSearchParams } from 'utils/use-search-params'
 import { useState } from 'react'
 
 /**
