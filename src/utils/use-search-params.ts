@@ -7,7 +7,8 @@ import { cleanObject } from "utils";
 export const useSearchParams = <k extends string>(keys: k[]) => {
   const url = new URL(window.location.href)
   const urlSearch = new URLSearchParams(url.search)
-  const [searchParams, setSearchParams] = useState(urlSearch)
+  const [searchParams] = useState(urlSearch)
+  const [, _forceUpdate] = useState(1)
 
   return [
     useMemo(
@@ -22,10 +23,10 @@ export const useSearchParams = <k extends string>(keys: k[]) => {
     (params: Partial<{[key in k]: unknown}>) => {
       // const o = cleanObject({ ...Object.fromEntries(searchParams), ...params }) as any
       // return setSearchParams(o)
-      return setSearchParams({
-        ...searchParams,
-        ...params
-      })
+      for(let key in params) {
+        searchParams.set(key, params[key] as string)
+        _forceUpdate(2)
+      }
     }
     // setSearchParams
   ] as const
