@@ -1,0 +1,10 @@
+updateComponent => vm._update(vm._render())
+vm._update => patch(vm.$el, vnode)
+patch(oldNode, vnode)
+1.oldNode.nodeType === 1 ? 根据vnode创建真实节点 插入到body中 (parentNode、oldNode.nextSibling)
+2.oldNode.tag !== vnode.tag 先比较标签名 不一样？创建新节点 替换老节点replaceChild
+3.标签名一样、vnode.el = oldNode.el 开始比较属性 patchProps(vnode) vnode.data存储了属性 setAttribute设置属性
+  3.1 比较文本vndoe.tag == undefined
+4.开始比较children
+  4.1 一个有 一个没有
+  4.2 双方都有children diff
