@@ -7,7 +7,7 @@ initComputed(vm, computed)
     const userDef = computed[key]
 
     用户定义的函数  计算属性的值可以为函数、对象{get, set}
-    let getter = typeof userDef === 'function ? userDef : userDef.get
+    let getter = typeof userDef === 'function' ? userDef : userDef.get
 
     每个计算属性key 对应一个watcher  lazy:true watcher默认不取值 getter方法
     watchers[key] = new Watcher(vm, getter, () => {}, { lazy: true })
@@ -16,18 +16,18 @@ initComputed(vm, computed)
     Object.defineProperty(vm, key, sharedProperty)
 
 
-sharedProperty.get = createCompu tedGetter(key)
+sharedProperty.get = createComputedGetter(key)
 
 createComputedGetter(key)
   return function computedGetter() {
-    let warcher = this._computedWatchers[key]
-    if (warcher.dirty) {
-      warcher.evaluate()
+    let watcher = this._computedWatchers[key]
+    if (watcher.dirty) {
+      watcher.evaluate()
     }
 
     收集渲染watcher 用来更新视图
     if (Dep.target) {
-      warcher.depend()
+      watcher.depend()
     }
     return watcher.value
   }
