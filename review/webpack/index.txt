@@ -1,0 +1,37 @@
+webpack构建速度和体积优化策略
+
+一、多进程/多实例构建 提升构建速度
+  1.thread-loader
+    test: /\.js$/,
+    use: ['thread-loader']
+    options: {
+      workers: 3
+    }
+  2.HappyPack
+  3.terser-webpack-plugin 开启parallel参数 支持es6压缩
+  4.uglifyjs-webpack-plugin 开启parallel参数 不支持压缩es6压缩
+
+二、分包 (将基础包打包成一个文件 react、reactDOM、redux、react-redux) 预编译
+
+  DllPlugin + DllReferencePlugin 对manifest.json引用
+
+=========webpack.dll.js======================================================
+  entry: {
+    library: ['react', 'reactDOM', 'redux', 'react-redux']
+  },
+  output: {
+    filename: '[name]_[chunkhash].dll.js',
+    library: [name]
+  }
+  plugins: [
+    new Webpack.DllPlugin({
+      name: [name]_[hash],
+      path: '../build/library/[name].json'
+    })
+  ]
+============webpack.config.js===================================================
+  new Webpack.DllReferencePlugin({
+    manifest: require('./build/library/library.json')
+  })
+  
+三、缓存提升构建速度
