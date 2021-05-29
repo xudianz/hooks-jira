@@ -4,29 +4,23 @@ import styled from '@emotion/styled'
 import { Row } from "components/lib"
 import { ReactComponent as SoftwareLogo } from 'assets/software-logo.svg'
 import { Button, Dropdown, Menu } from "antd"
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Routes, Navigate } from 'react-router'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { ProjectScreen } from "screens/project"
-import { EpicScreen } from "screens/epic"
-import { KanbanScreen } from "screens/kanban"
 import { resetRoute } from "utils"
 
 export const AuthenticatedApp = () => {
   return (
     <Container>
-      <PageHeader />
       <Main>
-        <Switch>
-          <Route exact path="/projects" component={ProjectListScreen}></Route>
-          <Route path="/projects/:projectId">
-            <ProjectScreen>
-              <Switch>
-                <Route path="/projects/:projectId/kanban" component={KanbanScreen}></Route>
-                <Route path="/projects/:projectId/epic" component={EpicScreen}></Route>
-              </Switch>
-            </ProjectScreen>
-          </Route>
-          <Redirect to="/projects"></Redirect>
-        </Switch>
+        <PageHeader />
+        <Router>
+          <Routes>
+            <Route path="/projects" element={<ProjectListScreen />}></Route>
+            <Route path="/projects/:projectId/*" element={<ProjectScreen />}></Route>
+            <Navigate to="/projects"></Navigate>
+          </Routes>
+        </Router>
       </Main>
     </Container>
   )

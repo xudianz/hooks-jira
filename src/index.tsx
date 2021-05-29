@@ -12,9 +12,9 @@ loadServer(() => ReactDOM.render(
   <React.StrictMode>
     <AppProvider>
       <DevTools />
-      <Router>
+      {/* <Router> */}
         <App />
-      </Router>
+      {/* </Router> */}
     </AppProvider>
   </React.StrictMode>,
   document.getElementById('root')
