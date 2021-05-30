@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { useMountedRef } from "utils"
 
 interface State<D> {
@@ -27,22 +27,23 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
   const mountedRef = useMountedRef()
   const [retry, setRetry] = useState(() => () => {})
 
-  const setData = (data: D) => {
+  const setData = useCallback((data: D) => {
     setState({
       data,
       error: null,
       stat: 'success'
     })
-  }
-  const setError = (error: Error) => {
+  }, [])
+
+  const setError = useCallback((error: Error) => {
     setState({
       data: null,
       error,
       stat: 'error'
     })
-  }
+  }, [])
 
-  const run = (promise: Promise<D>, runConfig?: {retry: () => Promise<D>}) => {
+  const run = useCallback((promise: Promise<D>, runConfig?: {retry: () => Promise<D>}) => {
     if (!promise || !promise.then) {
       throw new Error('请传入promise类型数据')
     }
@@ -53,7 +54,9 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
       }
     })
 
-    setState({...state, stat: 'loading' })
+    // setState({...state, stat: 'loading' })
+    // state作为依赖是  用函数修改state
+    setState(prevState => ({...prevState, stat: "loading"}))
 
     return promise
     .then(data => {
@@ -65,7 +68,7 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
       if (config.throwOnError) return Promise.reject(err)
       return err
     })
-  }
+  }, [setData, mountedRef, config.throwOnError, setError ]) // state
   
   return {
     isIdle: state.stat === 'idle',
