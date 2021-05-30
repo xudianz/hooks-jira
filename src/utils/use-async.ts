@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useMountedRef } from "utils"
 
 interface State<D> {
   error: Error | null,
@@ -23,6 +24,7 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
     ...initialState
   })
 
+  const mountedRef = useMountedRef()
   const [retry, setRetry] = useState(() => () => {})
 
   const setData = (data: D) => {
@@ -55,7 +57,8 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
 
     return promise
     .then(data => {
-      setData(data)
+      // 组件卸载 不设置状态
+      if (mountedRef.current) setData(data)
       return data
     }).catch(err => {
       setError(err)
