@@ -2,7 +2,7 @@ import { SearchPanel } from './search-panel'
 import { List } from './list'
 import { useDebounce, useDocumentTitle } from "utils"
 import styled from "@emotion/styled"
-import { Typography } from "antd"
+import { Typography, Row, Button } from "antd"
 import { useProjects } from "utils/project"
 import { useUsers } from "utils/user"
 import { useProjectsSearchParams } from './util'
@@ -17,7 +17,7 @@ import { useProjectsSearchParams } from './util'
  * 
  */
 
-export const ProjectListScreen = () => {
+export const ProjectListScreen = (props: { setProjectModelOpen: (isOpen: boolean) => void }) => {
   useDocumentTitle('项目列表', false)
   // const [, setParam] = useState({
   //   name: '',
@@ -35,10 +35,19 @@ export const ProjectListScreen = () => {
 
   return (
     <Container>
-      <h1>项目列表</h1>
+      <Row justify="space-between">
+        <h1>项目列表</h1>
+        <Button onClick={() => props.setProjectModelOpen(true)}>创建项目</Button>
+      </Row>
       <SearchPanel param={param} setParam={setParam} users={users || []} />
       { error ? <Typography.Text type="danger">{error.message}</Typography.Text> : null}
-      <List refresh={retry} dataSource={list || []} users={users || []} loading={isLoading}/>
+      <List
+        refresh={retry}
+        dataSource={list || []}
+        users={users || []}
+        loading={isLoading}
+        setProjectModelOpen={props.setProjectModelOpen}
+      />
     </Container>
   )
 }
