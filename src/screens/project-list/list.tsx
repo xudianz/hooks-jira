@@ -4,9 +4,9 @@ import { User } from "./search-panel"
 import { Link } from 'react-router-dom'
 
 export interface Project {
-  id: string,
+  id: number,
   name: string,
-  personId: string, // number
+  personId: number, // number
   pin: boolean,
   organization: string,
   created: number

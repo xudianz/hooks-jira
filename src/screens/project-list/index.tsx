@@ -5,7 +5,7 @@ import styled from "@emotion/styled"
 import { Typography } from "antd"
 import { useProjects } from "utils/project"
 import { useUsers } from "utils/user"
-import { useUrlQueryParam } from 'utils/url'
+import { useProjectsSearchParams } from './util'
 
 /**
  * 
@@ -18,20 +18,20 @@ import { useUrlQueryParam } from 'utils/url'
  */
 
 export const ProjectListScreen = () => {
+  useDocumentTitle('项目列表', false)
   // const [, setParam] = useState({
   //   name: '',
   //   personId: ''
   // })
   // 设置url参数
   // const keys = useState<('name' | 'personId')[]>(['name', 'personId'])
-  const [param, setParam] = useUrlQueryParam(['name', 'personId'])
-  const debouncedParam = useDebounce(param, 500) 
+  // const [param, setParam] = useUrlQueryParam(['name', 'personId'])
+  // const projectsParam = { ...param, personId: Number(param.personId) || undefined }
+  const [param, setParam] = useProjectsSearchParams()
+  // const debouncedParam = useDebounce(projectsParam, 500) 
 
-  const { isLoading, error, data: list } = useProjects(debouncedParam)
+  const { isLoading, error, data: list } = useProjects(useDebounce(param, 500))
   const { data: users } = useUsers()
-
-  useDocumentTitle('项目列表', false)
-
 
   return (
     <Container>

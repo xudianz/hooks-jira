@@ -1,8 +1,10 @@
 import { Select } from "antd";
 import { Row } from "types";
 
+// 获取组件的props类型
 type SelectProps = React.ComponentProps<typeof Select>
 
+// Omit删除类型中的某些key
 interface IdSelectProps extends Omit<SelectProps, 'value' | 'onChange' | 'options'> {
   value: Row | undefined | null,
   onChange: (value?: number) => void,
@@ -20,7 +22,7 @@ export const IdSelect = (props: IdSelectProps) => {
 
   return (
     <Select
-      value={toNumber(value)}
+      value={options?.length ? toNumber(value) : 0}
       onChange={value => onChange(toNumber(value) || undefined)}
       {...restProps}
     >
