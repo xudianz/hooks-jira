@@ -80,13 +80,14 @@ export const useAsync = <D>(initialState?: State<D>, initialConfig?: typeof defa
     .then(data => {
       // 组件卸载 不设置状态
       // if (mountedRef.current) setData(data)
+      setData(data)
       return data
     }).catch(err => {
       setError(err)
       if (config.throwOnError) return Promise.reject(err)
       return err
     })
-  }, [config.throwOnError, setError, safeDispatch]) // state
+  }, [setData, config.throwOnError, setError, safeDispatch]) // state
   
   return {
     isIdle: state.stat === 'idle',
