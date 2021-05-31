@@ -19,11 +19,28 @@ export const AuthenticatedApp = () => {
   return (
     <Container>
       <Main>
-        <PageHeader setProjectModelOpen={setProjectModelOpen}/>
+        <PageHeader
+          projectButton={
+            <ButtonNoPadding
+              type="link" 
+              onClick={() => setProjectModelOpen(true)
+            }>
+              创建项目
+            </ButtonNoPadding>
+          }
+        />
         <Router>
           <Routes>
             <Route path="/projects" element={
-              <ProjectListScreen setProjectModelOpen={setProjectModelOpen} />
+              <ProjectListScreen 
+                projectButton={
+                  <ButtonNoPadding
+                    type="link" 
+                    onClick={() => setProjectModelOpen(true)
+                  }>
+                    创建项目
+                  </ButtonNoPadding>
+                }/>
             }></Route>
             <Route path="/projects/:projectId/*" element={<ProjectScreen />}></Route>
             <Navigate to="/projects"></Navigate>
@@ -38,14 +55,14 @@ export const AuthenticatedApp = () => {
   )
 }
 
-const PageHeader = (props: { setProjectModelOpen: (isOpen: boolean) => void }) => {
+const PageHeader = (props: { projectButton: JSX.Element }) => {
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
         <ButtonNoPadding type="link" onClick={resetRoute}>
           <SoftwareLogo width="18rem" color="rgb(18, 132, 255)"/>
         </ButtonNoPadding>
-        <ProjectPopover setProjectModelOpen={props.setProjectModelOpen}/>
+        <ProjectPopover {...props}/>
         <span>用户</span>
       </HeaderLeft>
       <HeaderRight>
