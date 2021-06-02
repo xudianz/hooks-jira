@@ -8,7 +8,6 @@ import { Route, Routes, Navigate } from 'react-router'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { ProjectScreen } from "screens/project"
 import { resetRoute } from "utils"
-import { useState } from "react"
 import { ProjectModel } from 'screens/project-list/project-model'
 import { ProjectPopover } from "components/project-popover"
 import { ButtonNoPadding } from 'components/lib'
