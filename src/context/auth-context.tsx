@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useCallback, useContext } from 'react'
+import { ReactNode, useCallback } from 'react'
 import * as Auth from 'auth-provider'
 import { User } from 'screens/project-list/search-panel'
 import { http } from 'utils/http'
@@ -40,7 +40,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // 获取本地存储token 发送请求返回用户信息
   useMount(() => {
     // run(bootstrapUser())
-    dispatch(authStore.bootstrap())
+    // debugger
+    run(dispatch(authStore.bootstrap()))
   })
 
   // 判断不能写在前面 会给useMount 添加判断
