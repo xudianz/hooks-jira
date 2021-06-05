@@ -5,7 +5,8 @@ import styled from "@emotion/styled"
 import { Typography, Row } from "antd"
 import { useProjects } from "utils/project"
 import { useUsers } from "utils/user"
-import { useProjectsSearchParams } from './util'
+import { useProjectModel, useProjectsSearchParams } from './util'
+import { ButtonNoPadding } from 'components/lib'
 
 /**
  * 
@@ -17,7 +18,7 @@ import { useProjectsSearchParams } from './util'
  * 
  */
 
-export const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
+export const ProjectListScreen = () => {
   useDocumentTitle('项目列表', false)
   // const [, setParam] = useState({
   //   name: '',
@@ -32,12 +33,13 @@ export const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
 
   const { isLoading, error, data: list, retry } = useProjects(useDebounce(param, 500))
   const { data: users } = useUsers()
+  const { open } = useProjectModel()
 
   return (
     <Container>
       <Row justify="space-between">
         <h1>项目列表</h1>
-        {props.projectButton}
+        <ButtonNoPadding type="link" onClick={open}>创建项目</ButtonNoPadding>
       </Row>
       <SearchPanel param={param} setParam={setParam} users={users || []} />
       { error ? <Typography.Text type="danger">{error.message}</Typography.Text> : null}
@@ -46,7 +48,6 @@ export const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
         dataSource={list || []}
         users={users || []}
         loading={isLoading}
-        projectButton={props.projectButton}
       />
     </Container>
   )

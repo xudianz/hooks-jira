@@ -18,3 +18,16 @@ export const useProjectsSearchParams = () => {
     setParam
   ] as const
 }
+
+export const useProjectModel = () => {
+  const [{ projectCreate }, setProjectCreate] = useUrlQueryParam(['projectCreate'])
+
+  const open = () => setProjectCreate({projectCreate: true})
+  const close = () => setProjectCreate({projectCreate: undefined})
+
+  return {
+    projectModelOpen: projectCreate === 'true',
+    open,
+    close
+  }
+}
