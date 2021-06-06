@@ -1,4 +1,18 @@
 ==============webpack原理
 一、启动过程
-1.
+  1.查找webpack入口文件
+  执行webpack命令后、npm会让命令行工具进入node_modules\.bin目录，查找是否存在webpack.sh或者webpack.cmd文件
+  若存在就开始执行
+  实际入口文件是：node_modules\webpack\bin\webpack.js(通过webpack目录下package.json bin字段查找)
+
+  2.分析webpack的入口文件webpack.js
+  process.exitCode = 0                          // 1.正常执行返回
+  cosnt runCommand = (command, args) => {...}   // 2.运行某个命令
+  const isInstalled = packageName => {...}      // 3. 检查某些包是否安装
+  const CLIs = [...]                            // 4.webpack可用的cli: webpack-cli和webpack-command
+  const installedClis = CLIs.filter(cli => cli.installed) // 5.检查cli是否都安装完成
+  if (installedClis.length === 0) {...} else if           // 6.根据安装数量进行处理
+    (installedClis.length === 1) {...} else if ...
+
+
  
