@@ -1,0 +1,84 @@
+webpack构建速度和体积优化策略
+
+一、多进程/多实例构建 提升构建速度
+  1.thread-loader
+    test: /\.js$/,
+    use: ['thread-loader']
+    options: {
+      workers: 3
+    }
+  2.HappyPack
+  3.压缩阶段： terser-webpack-plugin 开启parallel参数 支持es6压缩
+             uglifyjs-webpack-plugin 开启parallel参数 不支持压缩es6压缩
+
+二、进一步分包：预编译资源模块
+2.1 将react、reactDOM、redux、react-redux基础包、业务基础包打包成一个文件
+
+  DllPlugin进行分包 + DllReferencePlugin 对manifest.json引用
+
+===========webpack.dll.js======================================================
+  entry: {
+    library: ['react', 'reactDOM', 'redux', 'react-redux']
+  },
+  output: {
+    filename: '[name]_[chunkhash].dll.js',
+    path: path.resolve(__dirname, 'build/library')
+    library: [name]
+  }
+  plugins: [
+    new Webpack.DllPlugin({
+      name: [name]_[hash],
+      path: '../build/library/[name].json'
+    })
+  ]
+============webpack.config.js===================================================
+  new Webpack.DllReferencePlugin({
+    manifest: require('./build/library/library.json')
+  })
+  
+三、缓存提升构建速度
+1. 模块转换阶段：hard-source-webpack-plugin
+2. 编译阶段：babel-loader开启缓存
+  loader: ['babel-loadere?cacheDirectory=true']
+3. 压缩阶段：terser-webpack-plugin
+  optimization: {
+    minimizer: [
+      new TerserWebpackPslugin({
+        parallel: true, // 开启多进程压缩
+        cache: true     // 开启缓存
+      })
+    ]
+  }
+
+四、缩小构建目标
+1.减少构建模块
+  test: /\.js$/
+  loader: happypack/loader // 开启多进程
+  exclude: 'node_modules'
+2.减少文件搜索范围、合理使用alias
+  resolve {
+    modules: [path.resolve(__dirname, 'node_modules')]
+    extensions: ['.js']
+    alias: {
+      src: ''
+    }
+  }
+  
+五、tree-shaking(必须为es6语法)
+  webpack默认支持 在.babelrc文件里设置 modules: false即可
+  .production模式下默认开启
+
+  剔除无用的css
+  purifyCss 识别用到的css
+  purgess-webpack-plugin和mini-css-extract-plugin配合使用
+
+六、动态polyfill
+  polyfill-service按需加载不同的polyfill
+  原理：识别User Agent下发不同的polyfill （iPhone5 iPhone X）
+
+=============体积优化总结==============
+1.Scope Hoisting
+2.Tree shaking
+3.公共资源分离
+4.图片压缩
+5.动态polyfill
