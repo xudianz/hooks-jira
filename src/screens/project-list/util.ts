@@ -1,4 +1,5 @@
 import { useMemo } from "react"
+import { useProject } from "utils/project"
 import { useUrlQueryParam } from "utils/url"
 
 // 搜索的参数
@@ -20,14 +21,25 @@ export const useProjectsSearchParams = () => {
 }
 
 export const useProjectModel = () => {
-  const [{ projectCreate }, setProjectCreate] = useUrlQueryParam(['projectCreate'])
+  // 创建
+  const [{ projectCreate }, setProjectCreate] = useUrlQueryParam(['projectCreate']) 
+  // 编辑 
+  const [{ editingProjectId }, setEditingProjectId] = useUrlQueryParam(['editingProjectId'])
+  const {data: editingProject, isLoading} = useProject(Number(editingProjectId))
 
   const open = () => setProjectCreate({projectCreate: true})
-  const close = () => setProjectCreate({projectCreate: undefined})
+  const close = () => {
+    setProjectCreate({projectCreate: undefined})
+    setEditingProjectId({editingProjectId: undefined})
+  } 
+  const startEdit = (id: number) => setEditingProjectId({editingProjectId: id})
 
   return {
-    projectModelOpen: projectCreate === 'true',
+    projectModelOpen: projectCreate === 'true' || Boolean(editingProject),
     open,
-    close
+    close,
+    startEdit,
+    editingProject,
+    isLoading
   }
 }
