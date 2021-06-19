@@ -1,0 +1,15 @@
+$set(target, key, value)
+1.数组
+  target.length = Math.max(target.length, key)
+  target.splice(key, 1, value)
+2.对象
+  ob = target.__ob__
+  1.如果不是响应式对象 直接赋值
+    if(!ob) target[key] = value
+  2.是响应式对象
+    将属性定义成响应式的
+    defineReactive(ob.value, key, value)
+    手动更新试图
+    ob.dep.notify()
+    
+  

@@ -37,19 +37,20 @@ patch(oldNode, vnode)
         oldEndVnode = oldChildren[--oldEndIndex]
         newStartVnode = newChildren[++newStartIndex]
       乱序比对
-        1.根据key和对应的索引 生成映射表
+        1.根据老节点oldChildren的key和对应的索引index 生成映射表 makeIndexByKey(oldChildren)
         2.用新的节点开头去映射表里查找 索引
           如果没有找到、不能复用、将当前元素插入到老的开始指针前面
           如果可以找到、通过key对应的index找到移动的元素 插入到老的开始指针的前面 然后比较patch(moveVnode, newStartVnode)
           移走的元素用null补位  oldChildren[moveIndex] = null
           newStartVnode = newChildren[++newStartIndex]
-    追加新元素
+    循环完毕:
+    1.追加新元素
     if (newStartIndex <= newEndIndex)
       for(let i = newStartIndex; i <= newEndIndex; i++)
         尾指针的额下一个节点是否有值
         if (newChildren[newEndIndex + 1] == null)
         el.insertBefore(createEle(newChildren[i]), 参照元素)
-    删除新元素
+    2.删除新元素
     if (oldStartIndex <= oldEndIndex)
       如果老节点中为移动走了的元素才进行删除
       if (oldChildren[i] !== null)  el.removeChildren(oldChildren[i].el)

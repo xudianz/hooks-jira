@@ -35,7 +35,7 @@ createComputedGetter(key)
 
 ============================Watcher====================================
 function evaluate() {
-  this.dirty = false  取过值了s
+  this.dirty = false  取过值了
   this.value = this.get()   watcher取值设置value属性
 }
 
