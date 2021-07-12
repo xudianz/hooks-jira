@@ -78,7 +78,21 @@ webpack构建速度和体积优化策略
 
 =============体积优化总结==============
 1.Scope Hoisting
-2.Tree shaking
+2.Tree shaking【必须为es6语法】不能有副作用 对样式有影响sideEffects: [**/*.css]
 3.公共资源分离
 4.图片压缩
 5.动态polyfill
+
+基础库分离
+  1.将react、reactDOM、redux基础包通过cdn引入，不打入bundle中
+    配置externals
+  2.利用splitChunksPlugin内置插件 配置test规则 分离出来
+  optimization -> splitChunks -> cacheGroups -> commons 
+  commons: {
+    test: /(react|react-dom)/, 
+    name: 'vendors',
+    chunks: 'all'
+  }
+分离页面公共文件
+  minChunks 设置最小引用次数
+  minSize   分离的包体积大小
