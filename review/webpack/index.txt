@@ -1,4 +1,43 @@
 ==============webpack原理
+webpack本质
+webpack可以将其理解是一种基于事件流的编程规范、一些列的插件运行；类似于node.js里的发布订阅模块
+
+核心对象Compiler继承 Tapable
+核心对象Compilation继承 Tapable
+Tapable是一个雷类似于node.js的EventEmitter的库 用于控制钩子函数的发布与订阅 控制着webpack的插件系统
+Tapable暴露了很多hook钩子(同步sync钩子、异步async钩子) 为插件提供挂在的钩子
+
+  1.syncWaterfallHook 同步流水钩子(将结果传递到下一个插件)
+  2.syncLoopHook      同步循环钩子
+
+Tapable提供了同步、异步绑定钩子的方法 ，并且他们都有绑定事件和执行事件对应的方法
+Tapable钩子的绑定与执行
+Async*                           Sync*
+绑定 tapAsync/tapPromise/tap      绑定 tap
+执行 callAsync/promise        执行 call
+
+示例
+const hook1 = new SyncHook(['arg1', 'arg2', 'arg3'])
+hook1.tap('hook1', (arg1, arg2, arg3) => {
+  console.log(arg1, arg2, arg3) // 1,2,3
+})
+hook1.call(1,2,3)
+
+
+class Compiler extends Tapable {}
+class Compilation extends Tapable {}
+
+
+
+
+
+
+
+
+
+
+
+
 一、启动过程
   1.查找webpack入口文件
   执行webpack命令后、npm会让命令行工具进入node_modules\.bin目录，查找是否存在webpack.sh或者webpack.cmd文件
@@ -16,4 +55,6 @@
 
 二、启动后的结果
   webpack最终会找到 webpack-cli (或者webpack-command 只能用一个)这个npm包 并且执行cli
+
+
  
