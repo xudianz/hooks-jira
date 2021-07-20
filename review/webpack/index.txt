@@ -27,6 +27,86 @@ hook1.call(1,2,3)
 class Compiler extends Tapable {}
 class Compilation extends Tapable {}
 
+=========================插件 my-plugin.js 【必须提供一个apply方法】=====================
+
+class MyPlugin {
+  apply(compiler) {
+    // 事件绑定
+    compiler.hook.break.tap('break', arg => console.log(arg))
+    compiler.hook1.calculateRoutes.tapPromise('calculateRoutes', () => {
+      return new Promise((resolve) => {
+        resolve(100)
+      })
+    })
+  }
+}
+
+class Compiler {
+  constructor() {
+    this.hook = {
+      break: new SyncHook(['100']),
+      calculateRoutes: new AsyncSerisHook([1,2,3])
+    }
+  }
+  run() {
+    // 事件执行
+    this.calculate(10)
+    this.break(1000)
+  }
+  break(speed) {
+    this.hook.break.call(speed)
+  }
+  calculate(num) {
+    this.hook.calculateRoutes.promise().then(() => {...})
+  }
+}
+
+==================================模拟插件执行=================================
+const myPlugin = new MyPlugin()
+cosnt compiler = new Compiler()
+
+cosnt options = {
+  plugins: [myPlugin]
+}
+
+for(const plugin in options.plugins) {
+  if (typeof plugin === 'function') {
+    plugin.call(compiler, compiler)
+  } else {
+    plugin.apply(compiler)
+  }
+}
+
+// 执行hook call/callAsync/promise
+compiler.run()
+
+============================webpack整体流程=======================
+钩子调用顺序
+1.entry-option         初始化option【将配置项转换成内部的插件externals -> ExternalsPlugin、devtools -> 开启对应的插件】
+2.run                  开始编译
+3.make                 从entry开始递归分析依赖，对每个依赖模块进行build
+4.before-resolve       对模块的位置进行解析
+5.build-module         开始构建某个模块
+6.normal-module-loader 将loader加载完的module进行编译 生产AST语法树
+7.program              遍历AST 遇到require语法进行依赖手机
+8.seal                 所有依赖build完成 开始优化
+9.emit                 输出到dist目录
+
+
+
+一、准备阶段
+二、模块构建和chunk生产阶段
+
+工厂函数ModuleFactory (doBuild runLoders)
+  NormalModuleFactory   -> require、import语法
+  ContextModuleFactory  -> 引入的路径语法
+
+make阶段
+done
+
+compiler调用compilation生命周期方法
+compilation主要是模块编译打包优化的过程、seal构建成功之后、chunks相关的、打包优化(optimize)的钩子
+三、文件生产
 
 
 
